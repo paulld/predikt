@@ -4,14 +4,19 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # uploading avatar
   has_attached_file :avatar,
                     :storage => :s3,
                     :s3_credentials => Proc.new{|a| a.instance.s3_credentials },
                     :styles => { :medium => "300x300>", :thumb => "100x100>" },
-                    :default_url => "https://s3.amazonaws.com/predikt-app/missing.jpg"
+                    :default_url => "/images/:style/missing.png"
 
-  validates_attachment_content_type :avatar, 
-                                    :content_type => /\Aimage\/.*\Z/
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
+  # uploading resume
+  has_attached_file :resume,
+                    :storage => :s3,
+                    :s3_credentials => Proc.new{|a| a.instance.s3_credentials }
 
   def s3_credentials
     {:bucket => ENV['S3_BUCKET'], :access_key_id => ENV['ACCESS_KEY_ID'], :secret_access_key => ENV['SECRET_ACCESS_KEY']}
