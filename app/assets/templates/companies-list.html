@@ -1,0 +1,23 @@
+<div class="row">
+  <h1>List of Companies</h1>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Stock Exchange</th>
+          <th>Symbol</th>
+          <th>Company Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="company in companies track by $index">
+          <td>{{ company.stock_exchange }}</td>
+          <!-- <td data-ng-if="company.number_annualincome > 0"><a data-ng-href="{{company.url}}">{{ company.symbol }}</a></td>
+          <td data-ng-if="company.number_annualincome == 0">{{ company.symbol }}</td> -->
+          <td><a data-ng-href="#{{company.link}}">{{ company.symbol }}</a></td>
+          <td>{{ company.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+var app = angular.module('scraper', ['ngRoute']);
+
+app.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+    .when('/companies', {
+      templateUrl: '<%= asset_path("companies-list.html") %>',
+      controller: 'CompaniesListCtrl'
+    })
+    .when('/companies/:stock_exchange/:id', {
+      templateUrl: '<%= asset_path("companies-item.html") %>',
+      controller: 'CompaniesItemCtrl'
+    })
+}]);
+
+app.controller('CompaniesListCtrl', ['$scope', '$http', function($scope, $http){
+  $http.get('/companies.json').success(function(response, status, xhr){
+    $scope.companies = response.companies;
+    console.log(status);
+  })
+}]);
+
+app.controller('CompaniesItemCtrl', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
+  var url = '/companies/' + $routeParams.stock_exchange + '/' + $routeParams.id + '.json';
+  $http.get(url).success(function(response, status, xhr){
+    $scope.company = response;
+    $scope.hasAnnualIncome = $scope.company.annualincomes.empty ? false : true;
+  })
+}]);
+

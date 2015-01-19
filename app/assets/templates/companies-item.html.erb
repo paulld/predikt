@@ -1,0 +1,21 @@
+<div class="row">
+  <h1>{{ company.name }}</h1>
+
+  <p data-ng-if="!hasAnnualIncome">No accounts are listed for this company yet.</p>
+
+  <table class="table" data-ng-if="hasAnnualIncome">
+    <thead>
+      <tr>
+        <th>{{ company.annualincomes[0]['currency'] }}</th>
+        <th data-ng-repeat="annualincome in company.annualincomes">{{ annualincome['period'] }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% Annualincome.columns[4..52].each_with_index do |column, index| %>
+        <tr>
+          <td><%= column.name.humanize.split.map(&:capitalize).join(' ') %></td>
+          <td data-ng-repeat="annualincome in company.annualincomes">{{ annualincome['<%= column.name %>'] }}</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
